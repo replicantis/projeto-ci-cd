@@ -56,3 +56,7 @@ http://localhost:5000
 ## Alertas
 
 O GitHub Actions envia notificações automáticas ao Discord quando há commits ou alterações em Pull Requests.
+
+## Testes unitários
+
+Os testes automatizados são executados pelo GitHub Actions sempre que uma Pull Request é criada ou atualizada com um novo commit.

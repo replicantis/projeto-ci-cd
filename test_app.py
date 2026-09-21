@@ -28,3 +28,20 @@ def test_api_converter():
     assert resposta.status_code == 200
     assert resposta.json["celsius"] == 20
     assert resposta.json["fahrenheit"] == 68
+
+
+def test_celsius_para_fahrenheit_trinta_sete():
+    assert celsius_para_fahrenheit(37) == 98.6
+
+
+def test_celsius_para_fahrenheit_dez():
+    assert celsius_para_fahrenheit(10) == 50
+
+
+def test_api_converter_com_zero():
+    cliente = app.test_client()
+    resposta = cliente.get("/api/converter?celsius=0")
+
+    assert resposta.status_code == 200
+    assert resposta.json["celsius"] == 0
+    assert resposta.json["fahrenheit"] == 32
