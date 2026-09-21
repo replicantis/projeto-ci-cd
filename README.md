@@ -52,3 +52,7 @@ Acesse:
 ```text
 http://localhost:5000
 ```
+
+## Alertas
+
+O GitHub Actions envia notificações automáticas ao Discord quando há commits ou alterações em Pull Requests.
