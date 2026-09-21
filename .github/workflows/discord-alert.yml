@@ -1,0 +1,41 @@
+name: Alertas Discord
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  notificar-discord:
+    name: Enviar alerta para o Discord
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enviar alerta de commit ou Pull Request
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          EVENTO: ${{ github.event_name }}
+          REPOSITORIO: ${{ github.repository }}
+          AUTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+          MENSAGEM_COMMIT: ${{ github.event.head_commit.message }}
+        run: |
+          if [ "$EVENTO" = "pull_request" ]; then
+            MENSAGEM="🔔 Pull Request atualizada em $REPOSITORIO por $AUTOR."
+          else
+            MENSAGEM="✅ Novo commit em $REPOSITORIO por $AUTOR na branch $BRANCH: $MENSAGEM_COMMIT"
+          fi
+
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"$MENSAGEM\nCommit: $COMMIT\nEvento: $EVENTO\"}" \
+            "$DISCORD_WEBHOOK_URL"
